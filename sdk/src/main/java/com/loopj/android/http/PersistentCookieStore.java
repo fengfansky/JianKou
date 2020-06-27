@@ -18,6 +18,13 @@
 
 package com.loopj.android.http;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.text.TextUtils;
+
+import org.apache.http.client.CookieStore;
+import org.apache.http.cookie.Cookie;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -26,13 +33,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.http.client.CookieStore;
-import org.apache.http.cookie.Cookie;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 /**
  * A persistent cookie store which implements the Apache HttpClient

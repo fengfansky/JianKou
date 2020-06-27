@@ -1,9 +1,5 @@
 package com.arrownock.demo;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -19,9 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.arrownock.exception.ArrownockException;
 import com.arrownock.push.AnPush;
 import com.arrownock.push.AnPushCallbackAdapter;
-import com.arrownock.exception.ArrownockException;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class ReceiveActivity extends Activity {
 	public final static String LOG_TAG = ReceiveActivity.class.getName();

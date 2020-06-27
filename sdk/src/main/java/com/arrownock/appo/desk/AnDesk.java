@@ -1,15 +1,5 @@
 package com.arrownock.appo.desk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -21,6 +11,16 @@ import com.arrownock.im.AnIM;
 import com.arrownock.internal.util.ANEmojiUtil;
 import com.arrownock.internal.util.Constants;
 import com.arrownock.push.ANBase64;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class AnDesk {
     public static String ANDESK_IMAGE_TYPE = "image";

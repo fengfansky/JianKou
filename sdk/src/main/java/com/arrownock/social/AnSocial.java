@@ -1,7 +1,5 @@
 package com.arrownock.social;
 
-import java.util.Map;
-
 import android.content.Context;
 import android.util.Log;
 
@@ -9,6 +7,8 @@ import com.arrownock.exception.ArrownockException;
 import com.arrownock.internal.device.DeviceManager;
 import com.arrownock.internal.social.AnSocialHttpClientWrapper;
 import com.arrownock.internal.util.Constants;
+
+import java.util.Map;
 
 public class AnSocial {
     private static final int DEFAULT_TIMEOUT = 60000;

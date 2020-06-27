@@ -3,8 +3,8 @@ package com.arrownock.demo;
 import android.os.Handler;
 import android.util.Log;
 
-import com.arrownock.push.AnPushCallbackAdapter;
 import com.arrownock.exception.ArrownockException;
+import com.arrownock.push.AnPushCallbackAdapter;
 
 public class DemoCallback extends AnPushCallbackAdapter {
 	public final static String LOG_TAG = DemoCallback.class.getName();

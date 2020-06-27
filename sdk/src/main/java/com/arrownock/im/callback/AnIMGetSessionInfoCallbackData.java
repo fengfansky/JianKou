@@ -1,9 +1,9 @@
 package com.arrownock.im.callback;
 
+import com.arrownock.exception.ArrownockException;
+
 import java.util.Date;
 import java.util.Set;
-
-import com.arrownock.exception.ArrownockException;
 
 public class AnIMGetSessionInfoCallbackData extends AnIMBaseRequestCallbackData {
 	private String sessionId = null;

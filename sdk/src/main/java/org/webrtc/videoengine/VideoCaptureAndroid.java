@@ -10,16 +10,12 @@
 
 package org.webrtc.videoengine;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.Exchanger;
-
 import android.content.Context;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
+import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.PreviewCallback;
-import android.hardware.Camera;
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
 import android.os.Handler;
@@ -27,9 +23,13 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Surface;
-import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceHolder;
+import android.view.SurfaceHolder.Callback;
 import android.view.WindowManager;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.Exchanger;
 
 // Wrapper for android Camera, with support for direct local preview rendering.
 // Threading notes: this class is called from ViE C++ code, and from Camera &

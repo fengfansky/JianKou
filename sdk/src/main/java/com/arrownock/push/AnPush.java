@@ -1,13 +1,5 @@
 package com.arrownock.push;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Properties;
-import java.util.TimeZone;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -22,6 +14,14 @@ import com.arrownock.internal.device.DeviceManager;
 import com.arrownock.internal.push.LogUtil;
 import com.arrownock.internal.util.Constants;
 import com.xiaomi.mipush.sdk.MiPushClient;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Properties;
+import java.util.TimeZone;
 
 public class AnPush {
 	private final static String LOG_NAME = "ArrownockSDK";

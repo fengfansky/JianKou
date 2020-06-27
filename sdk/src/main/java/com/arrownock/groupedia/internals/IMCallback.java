@@ -1,15 +1,15 @@
 package com.arrownock.groupedia.internals;
 
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.arrownock.groupedia.AnGroupedia;
 import com.arrownock.groupedia.model.User;
 import com.arrownock.im.AnIM;
 import com.arrownock.internal.groupedia.IAnGroupediaCallback;
+
+import org.json.JSONObject;
+
+import java.util.Map;
 
 public class IMCallback implements IAnGroupediaCallback {
     private com.arrownock.groupedia.callback.IAnGroupediaCallback callback = null;

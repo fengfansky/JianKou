@@ -1,8 +1,8 @@
 package com.arrownock.internal.desk;
 
-import java.util.Map;
-
 import com.arrownock.exception.ArrownockException;
+
+import java.util.Map;
 
 public interface IAnDeskCallback {
 	void topicClosed(String topicId, long timestamp, Map<String, String> customData);

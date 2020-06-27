@@ -1,5 +1,15 @@
 package com.arrownock.appo.desk.internals;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.arrownock.im.AnIM;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.internal.util.DefaultHostnameVerifier;
+import com.arrownock.push.PahoSocketFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,22 +23,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.Map;
-import java.util.Random;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.arrownock.im.AnIM;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.internal.util.DefaultHostnameVerifier;
-import com.arrownock.push.PahoSocketFactory;
 
 public class Utils {
     public final static String PREF_IM_API = "imAPI";

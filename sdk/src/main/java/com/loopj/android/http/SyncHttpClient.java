@@ -1,11 +1,11 @@
 package com.loopj.android.http;
 
+import android.content.Context;
+import android.os.Message;
+
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HttpContext;
-
-import android.content.Context;
-import android.os.Message;
 
 public abstract class SyncHttpClient extends AsyncHttpClient {
 	private int responseCode;

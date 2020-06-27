@@ -1,8 +1,8 @@
 package com.arrownock.im.callback;
 
-import java.util.Map;
-
 import com.arrownock.exception.ArrownockException;
+
+import java.util.Map;
 
 public class AnIMGetClientsStatusCallbackData extends AnIMBaseRequestCallbackData {
 	Map<String, Boolean> clientsStatus = null;

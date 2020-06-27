@@ -1,5 +1,8 @@
 package com.arrownock.internal.push;
 
+import android.os.Environment;
+import android.util.Log;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,9 +10,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import android.os.Environment;
-import android.util.Log;
 
 public class LogUtil {
 	public enum LogLevel {

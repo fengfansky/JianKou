@@ -1,5 +1,20 @@
 package com.arrownock.internal.social;
 
+import android.content.Context;
+import android.util.Base64;
+
+import com.arrownock.exception.ArrownockException;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.social.IAnSocialCallback;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.message.BasicHeader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -12,21 +27,6 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.http.message.BasicHeader;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
-import android.util.Base64;
-
-import com.arrownock.exception.ArrownockException;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.social.IAnSocialCallback;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 public class AnSocialHttpClient {
     private final static AnSocialHostnameVerifier hostnameVerifier = new AnSocialHostnameVerifier();

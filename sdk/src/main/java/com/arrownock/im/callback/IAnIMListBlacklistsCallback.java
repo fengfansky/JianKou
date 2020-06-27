@@ -1,8 +1,8 @@
 package com.arrownock.im.callback;
 
-import java.util.List;
-
 import com.arrownock.exception.ArrownockException;
+
+import java.util.List;
 
 public interface IAnIMListBlacklistsCallback {
 	void onSuccess(List<String> clients);

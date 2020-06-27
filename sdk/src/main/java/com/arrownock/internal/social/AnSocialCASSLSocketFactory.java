@@ -1,5 +1,11 @@
 package com.arrownock.internal.social;
 
+import android.net.SSLCertificateSocketFactory;
+import android.os.Build;
+import android.util.Log;
+
+import org.apache.http.conn.ssl.SSLSocketFactory;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,12 +28,6 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import org.apache.http.conn.ssl.SSLSocketFactory;
-
-import android.net.SSLCertificateSocketFactory;
-import android.os.Build;
-import android.util.Log;
 
 public class AnSocialCASSLSocketFactory extends SSLSocketFactory {
 	final static String LOG_TAG = "CASSLSocketFactory";

@@ -1,8 +1,8 @@
 package com.arrownock.groupedia.model;
 
-import java.io.Serializable;
-
 import org.json.JSONObject;
+
+import java.io.Serializable;
 
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;

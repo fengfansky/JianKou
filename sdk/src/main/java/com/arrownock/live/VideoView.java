@@ -1,9 +1,9 @@
 package com.arrownock.live;
 
-import com.arrownock.internal.live.MediaStreamsViewListener;
-
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+
+import com.arrownock.internal.live.MediaStreamsViewListener;
 
 public class VideoView extends GLSurfaceView {
 	protected MediaStreamsViewListener listener = null;

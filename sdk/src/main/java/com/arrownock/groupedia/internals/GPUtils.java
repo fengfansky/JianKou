@@ -1,5 +1,15 @@
 package com.arrownock.groupedia.internals;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.arrownock.im.AnIM;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.internal.util.DefaultHostnameVerifier;
+import com.arrownock.push.PahoSocketFactory;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,16 +27,6 @@ import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.arrownock.im.AnIM;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.internal.util.DefaultHostnameVerifier;
-import com.arrownock.push.PahoSocketFactory;
 
 public class GPUtils {
     public final static String PREF_GS_API = "gsAPI";

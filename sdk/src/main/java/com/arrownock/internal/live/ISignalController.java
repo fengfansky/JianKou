@@ -1,10 +1,10 @@
 package com.arrownock.internal.live;
 
+import com.arrownock.exception.ArrownockException;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import com.arrownock.exception.ArrownockException;
 
 public interface ISignalController {
 	boolean isOnline();

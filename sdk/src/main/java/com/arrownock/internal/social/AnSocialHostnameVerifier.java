@@ -1,5 +1,9 @@
 package com.arrownock.internal.social;
 
+import com.arrownock.internal.util.DistinguishedNameParser;
+
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+
 import java.io.IOException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateParsingException;
@@ -16,10 +20,6 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import javax.security.auth.x500.X500Principal;
-
-import org.apache.http.conn.ssl.X509HostnameVerifier;
-
-import com.arrownock.internal.util.DistinguishedNameParser;
 
 /**
  * A HostnameVerifier consistent with <a

@@ -1,12 +1,14 @@
 package com.arrownock.live;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import android.content.Context;
+import android.os.Looper;
+import android.util.Log;
+
+import com.arrownock.exception.ArrownockException;
+import com.arrownock.internal.live.ISignalController;
+import com.arrownock.internal.live.MediaStreamsViewListener;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.live.MediaStreamsRenderer.ScalingType;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,26 +21,24 @@ import org.webrtc.IceCandidate;
 import org.webrtc.MediaConstraints;
 import org.webrtc.MediaStream;
 import org.webrtc.PeerConnection;
-import org.webrtc.PeerConnectionFactory;
-import org.webrtc.SdpObserver;
-import org.webrtc.SessionDescription;
-import org.webrtc.VideoRenderer;
 import org.webrtc.PeerConnection.IceConnectionState;
 import org.webrtc.PeerConnection.IceGatheringState;
 import org.webrtc.PeerConnection.Observer;
 import org.webrtc.PeerConnection.SignalingState;
+import org.webrtc.PeerConnectionFactory;
+import org.webrtc.SdpObserver;
+import org.webrtc.SessionDescription;
 import org.webrtc.SessionDescription.Type;
+import org.webrtc.VideoRenderer;
 import org.webrtc.VideoTrack;
 
-import com.arrownock.exception.ArrownockException;
-import com.arrownock.internal.live.ISignalController;
-import com.arrownock.internal.live.MediaStreamsViewListener;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.live.MediaStreamsRenderer.ScalingType;
-
-import android.content.Context;
-import android.os.Looper;
-import android.util.Log;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PeerConnectionManager implements MediaStreamsViewListener, DataChannel.Observer{
 	private String TAG = "PeerConnectionManager";

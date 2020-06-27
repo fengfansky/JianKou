@@ -1,5 +1,23 @@
 package com.arrownock.internal.device;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.location.Location;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
+import android.util.Log;
+
+import com.arrownock.internal.device.DeviceLocator.LocationResult;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.internal.util.DefaultHostnameVerifier;
+import com.arrownock.push.PahoSocketFactory;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,24 +37,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import com.arrownock.internal.device.DeviceLocator.LocationResult;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.internal.util.DefaultHostnameVerifier;
-import com.arrownock.push.PahoSocketFactory;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.location.Location;
-import android.os.Build;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
-import android.util.Log;
 
 public class DeviceManager {
     private static final String LOG_TAG = DeviceManager.class.getName();

@@ -1,10 +1,5 @@
 package com.arrownock.appo.desk.internals;
 
-import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -13,6 +8,11 @@ import com.arrownock.appo.desk.AnDesk;
 import com.arrownock.exception.ArrownockException;
 import com.arrownock.im.AnIM;
 import com.arrownock.internal.desk.IAnDeskCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Map;
 
 public class IMCallback implements IAnDeskCallback {
     private com.arrownock.appo.desk.IAnDeskCallback callback = null;

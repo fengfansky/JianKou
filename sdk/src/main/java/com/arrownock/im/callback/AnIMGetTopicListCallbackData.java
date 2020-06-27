@@ -1,10 +1,10 @@
 package com.arrownock.im.callback;
 
-import java.util.List;
+import com.arrownock.exception.ArrownockException;
 
 import org.json.JSONObject;
 
-import com.arrownock.exception.ArrownockException;
+import java.util.List;
 
 public class AnIMGetTopicListCallbackData extends AnIMBaseRequestCallbackData {
 	List<JSONObject> topicList = null;

@@ -18,13 +18,13 @@
 
 package com.loopj.android.http;
 
+import android.os.Message;
+
 import org.apache.http.HttpStatus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import android.os.Message;
 
 /**
  * Used to intercept and handle the responses from requests made using

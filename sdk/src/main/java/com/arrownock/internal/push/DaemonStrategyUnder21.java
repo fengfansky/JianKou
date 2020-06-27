@@ -1,14 +1,5 @@
 package com.arrownock.internal.push;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import com.arrownock.push.ANBase64;
-import com.arrownock.push.PushService;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -16,6 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.SystemClock;
+
+import com.arrownock.push.ANBase64;
+import com.arrownock.push.PushService;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * the strategy in android API below 21.

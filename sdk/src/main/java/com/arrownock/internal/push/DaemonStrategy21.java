@@ -1,16 +1,16 @@
 package com.arrownock.internal.push;
 
-import java.io.File;
-import java.io.IOException;
-
-import com.arrownock.push.PushService;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
+
+import com.arrownock.push.PushService;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * the strategy in android API 21.

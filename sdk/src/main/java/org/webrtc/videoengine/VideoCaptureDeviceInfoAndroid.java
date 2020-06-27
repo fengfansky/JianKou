@@ -10,17 +10,17 @@
 
 package org.webrtc.videoengine;
 
-import java.util.List;
-
+import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.hardware.Camera.Size;
-import android.hardware.Camera;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class VideoCaptureDeviceInfoAndroid {
   private final static String TAG = "anLive";

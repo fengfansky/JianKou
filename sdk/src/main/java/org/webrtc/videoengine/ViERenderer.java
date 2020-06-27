@@ -11,7 +11,6 @@
 package org.webrtc.videoengine;
 
 import android.content.Context;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class ViERenderer {

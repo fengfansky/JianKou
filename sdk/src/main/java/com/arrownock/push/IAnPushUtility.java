@@ -1,5 +1,35 @@
 package com.arrownock.push;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.util.Base64;
+import android.util.Log;
+
+import com.arrownock.exception.ArrownockException;
+import com.arrownock.internal.device.DeviceManager;
+import com.arrownock.internal.push.LogUtil;
+import com.arrownock.internal.util.Constants;
+import com.arrownock.internal.util.DefaultHostnameVerifier;
+import com.arrownock.internal.util.KeyValuePair;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.xiaomi.mipush.sdk.MiPushClient;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,36 +61,6 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-import android.provider.Settings;
-import android.telephony.TelephonyManager;
-import android.util.Base64;
-import android.util.Log;
-
-import com.arrownock.exception.ArrownockException;
-import com.arrownock.internal.device.DeviceManager;
-import com.arrownock.internal.push.LogUtil;
-import com.arrownock.internal.util.Constants;
-import com.arrownock.internal.util.DefaultHostnameVerifier;
-import com.arrownock.internal.util.KeyValuePair;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.xiaomi.mipush.sdk.MiPushClient;
 
 public interface IAnPushUtility {
     String getDeviceUniqueId(Context context, String appKey);

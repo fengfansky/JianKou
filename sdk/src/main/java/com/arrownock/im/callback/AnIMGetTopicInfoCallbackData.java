@@ -1,10 +1,10 @@
 package com.arrownock.im.callback;
 
+import com.arrownock.exception.ArrownockException;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
-
-import com.arrownock.exception.ArrownockException;
 
 public class AnIMGetTopicInfoCallbackData extends AnIMBaseRequestCallbackData {
     private String topicId = null;

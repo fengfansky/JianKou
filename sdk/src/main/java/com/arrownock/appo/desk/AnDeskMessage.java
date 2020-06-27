@@ -1,7 +1,5 @@
 package com.arrownock.appo.desk;
 
-import java.util.Map;
-
 public class AnDeskMessage {
 	private AnDeskMessageType type;
 	private String msgId;

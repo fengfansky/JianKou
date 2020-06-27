@@ -1,17 +1,5 @@
 package com.arrownock.groupedia;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import android.content.Context;
 
 import com.arrownock.exception.ArrownockException;
@@ -39,6 +27,18 @@ import com.arrownock.im.AnIM;
 import com.arrownock.internal.util.ANEmojiUtil;
 import com.arrownock.internal.util.Constants;
 import com.arrownock.push.ANBase64;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 public class AnGroupedia {
     public static String ANGROUPEDIA_IMAGE_TYPE = "image";

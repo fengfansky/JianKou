@@ -1,5 +1,16 @@
 package com.arrownock.live;
 
+import android.graphics.SurfaceTexture;
+import android.opengl.EGL14;
+import android.opengl.EGLContext;
+import android.opengl.GLES11Ext;
+import android.opengl.GLES20;
+import android.opengl.GLSurfaceView;
+import android.util.Log;
+
+import org.webrtc.VideoRenderer;
+import org.webrtc.VideoRenderer.I420Frame;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -9,17 +20,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import android.graphics.SurfaceTexture;
-import android.opengl.EGL14;
-import android.opengl.EGLContext;
-import android.opengl.GLES11Ext;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
-import android.util.Log;
-
-import org.webrtc.VideoRenderer.I420Frame;
-import org.webrtc.VideoRenderer;
 
 /**
  * Efficiently renders YUV frames using the GPU for CSC.

@@ -1,16 +1,14 @@
 package com.arrownock.push;
 
-import com.arrownock.internal.push.DaemonConfigurations;
-import com.arrownock.internal.push.IDaemonStrategy;
-
-import android.app.Notification;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
+
+import com.arrownock.internal.push.DaemonConfigurations;
+import com.arrownock.internal.push.IDaemonStrategy;
 
 public class DaemonService extends Service {
 	public final static String LOG_TAG = DaemonService.class.getName();
