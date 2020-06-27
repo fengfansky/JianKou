@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@+id/ScrollView01"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent" >
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:paddingLeft="-4dp"
+	    android:paddingRight="-4dp" >
+
+	    <TextView
+	        android:id="@+id/select_channels"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/select_channels"/>
+	    
+	    <Button 
+	        android:id="@+id/channel_1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="Channel 1"
+	        android:layout_below="@id/select_channels"/>
+	    
+	    <CheckBox android:id="@+id/checkbox_1"
+	        android:layout_width="48dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/select_channels"
+	        android:onClick="onChannelCheckboxClicked"/>
+	    
+	    <Button 
+	        android:id="@+id/channel_2"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="Channel 2"
+	        android:layout_below="@id/channel_1"/>
+	    
+	    <CheckBox android:id="@+id/checkbox_2"
+	        android:layout_width="48dp"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/channel_1"
+	        android:layout_alignParentRight="true"
+	        android:onClick="onChannelCheckboxClicked"/>
+	    
+	    <TextView
+	        android:id="@+id/silent_period"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/silent_period"
+	        android:layout_below="@id/channel_2"/> 
+	        
+	    <Button 
+	        android:id="@+id/silent_period_start"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/start_time"
+	        android:layout_below="@id/silent_period"/>
+	    
+	    <Button 
+	        android:id="@+id/silent_period_end"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/silent_period_start"
+	        android:text="@string/end_time"
+	        android:layout_below="@id/silent_period"/>
+	    
+	    <Button
+	        android:id="@+id/silent_period_clear"
+	        android:layout_width="72dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/set" 
+	        android:layout_below="@id/silent_period"/>
+	    
+	    <TextView
+	        android:id="@+id/resend_silent_period"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/resend_silent_period"
+	        android:layout_below="@id/silent_period_clear"/> 
+	        
+	    <Button 
+	        android:id="@+id/resend_silent_period_start"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/start_time"
+	        android:layout_below="@id/resend_silent_period"/>
+	   	<Button 
+	        android:id="@+id/resend_silent_period_end"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/resend_silent_period_start"
+	        android:text="@string/end_time"
+	        android:layout_below="@id/resend_silent_period"/>
+	    <Button
+	        android:id="@+id/resend_silent_period_clear"
+	        android:layout_width="72dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/set" 
+	        android:layout_below="@id/resend_silent_period"/>
+	    
+	    <TextView
+	        android:id="@+id/mute"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/mute"
+	        android:layout_below="@id/resend_silent_period_clear"/> 
+	        
+	    <Button 
+	        android:id="@+id/mute_set"
+	        android:layout_width="216dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/set"
+	        android:layout_below="@id/mute"/>
+	    
+	    <Button
+	        android:id="@+id/mute_clear"
+	        android:layout_width="72dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/clear" 
+	        android:layout_below="@id/mute"/>
+	    
+	    <TextView
+	        android:id="@+id/scheduled_mute"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/scheduled_mute"
+	        android:layout_below="@id/mute_clear"/> 
+	        
+	    <Button 
+	        android:id="@+id/scheduled_mute_start"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/start_time"
+	        android:layout_below="@id/scheduled_mute"/>
+	   	<Button 
+	        android:id="@+id/scheduled_mute_end"
+	        android:layout_width="108dp"
+	        android:layout_height="wrap_content"
+			android:layout_toRightOf="@id/scheduled_mute_start"
+	        android:text="@string/end_time"
+	        android:layout_below="@id/scheduled_mute"/>
+	    
+	    <Button
+	        android:id="@+id/scheduled_mute_clear"
+	        android:layout_width="72dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/set" 
+	        android:layout_below="@id/scheduled_mute"/>
+	    <!-- 
+	    <Button 
+	        android:id="@+id/start_time"
+	        android:layout_width="144dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/start_time"
+	        android:layout_below="@id/silent_period"/>
+	    
+	    <Button
+	        android:id="@+id/end_time"
+	        android:layout_width="144dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/end_time" 
+	        android:layout_below="@id/silent_period"/>  
+	    
+	    <Button 
+	        android:id="@+id/silent_receive_button"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:gravity="left|center_vertical"
+	        android:text="@string/silent_receive"
+	        android:layout_below="@id/start_time"/>
+	     
+	    <CheckBox android:id="@+id/silent_receive"
+	        android:layout_width="48dp"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/start_time"
+	        android:layout_alignParentRight="true"
+	        android:onClick="onSilentCheckboxClicked"/>    
+	 	-->
+	     <EditText
+	         android:id="@+id/push_log"
+	         android:layout_width="fill_parent"
+	         android:layout_height="wrap_content"
+	         android:layout_gravity="left"
+	         android:gravity="top|left"
+	         android:maxLines="6"
+	         android:text="" 
+	         android:layout_below="@id/scheduled_mute_clear"/>
+	 
+	    <Button 
+	        android:id="@+id/enable_push"
+	        android:layout_width="120dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:text="@string/enable_push"
+	        android:layout_below="@id/push_log"/>
+	    
+	    <Button
+	        android:id="@+id/disable_push"
+	        android:layout_width="120dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:text="@string/disable_push" 
+	        android:layout_below="@id/push_log"/>
+
+		<!-- print the ANID, for debugging only -->
+	    <TextView android:id="@+id/anid_label" 
+		     android:text = "@string/anid_label"   
+		     android:layout_width="wrap_content" 
+		     android:layout_height="wrap_content" 
+	         android:layout_gravity="left"
+	   		 android:layout_below="@id/enable_push"/>      
+
+	    <TextView android:id="@+id/anid_text" 
+		     android:layout_width="wrap_content" 
+		     android:layout_height="wrap_content" 
+	      	 android:layout_toRightOf="@+id/anid_label"
+	      	 android:layout_below="@id/enable_push"/>
+	    
+	</RelativeLayout>
+</ScrollView>

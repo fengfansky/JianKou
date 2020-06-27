@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arrownock Demo</string>
+    <!-- ReceiveActivity -->
+    <string name="select_channels">Select Channel(s):</string>
+    <string-array name="channels_array">
+        <item>Channel1</item>
+        <item>Channel2</item>
+    </string-array>
+    <string name="silent_period">Silent Period Setting:</string>
+    <string name="resend_silent_period">Silent Period Setting (Resend):</string>
+    <string name="mute">Mute Setting:</string>
+    <string name="scheduled_mute">Scheduled Mute Setting:</string>
+    <string name="set">Set</string>
+    <string name="clear">Clear</string>
+    <string name="start_time">Start</string>
+    <string name="end_time">End</string>
+    <string name="enable_push">Enable Push</string>
+    <string name="disable_push">Disable Push</string>
+    <string name="anid_label">ANID:</string>
+    
+    <!-- SendActivity -->
+    <string name="select_channel_text">Select A Channel:</string>
+    <string name="location_base">Location Based Push</string>
+    <string name="message_content">Push Message:</string>
+    <string name="edit_message">Enter a message</string>
+    <string name="button_send">Send</string>
+</resources>

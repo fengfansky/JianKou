@@ -1,0 +1,35 @@
+ext {
+    isAlone = false;//false:作为Lib组件存在， true:作为application存在
+    isCloseBeta = true; //标记是否为内测版本，测试打包时设置为true，发布时需要更改为false.
+
+    java_version = JavaVersion.VERSION_1_8
+    android = [
+
+            compileSdkVersion: 29,
+            buildToolsVersion: "29.0.2",
+            minSdkVersion    : 16,
+            targetSdkVersion : 26,
+            versionCode      : 1,
+            versionName      : '1.0.1',
+    ]
+
+    debug = [
+            minSdkVersion: 21
+    ]
+
+    //Android
+    supportLibraryVersion = '26.1.0'
+
+    ijkplayer = '0.8.8'
+    exo_player2 = '2.9.3'
+    transitionseverywhere = '1.7.0'
+    floatWindow = '1.0.6'
+
+    imageLoader = '3.8.0'
+
+    gsonVersion = "2.2.4"
+
+    umengAnalyticsVer = "6.1.4"
+
+
+}
