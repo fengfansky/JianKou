@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.arrownock.exception.ArrownockException;
-import com.arrownock.push.AnPush;
-import com.arrownock.push.AnPushCallbackAdapter;
+import com.arrownock.anpush.AnPush;
+import com.arrownock.anpush.AnPushCallbackAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;

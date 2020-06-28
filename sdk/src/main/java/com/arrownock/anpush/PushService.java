@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -28,6 +28,11 @@ import com.arrownock.internal.push.IDaemonStrategy;
 import com.arrownock.internal.push.LogUtil;
 import com.arrownock.internal.util.Constants;
 import com.arrownock.internal.util.KeyValuePair;
+import com.arrownock.push.IMQTTAgent;
+import com.arrownock.push.IMQTTEvent;
+import com.arrownock.push.MQTTConnectionStatus;
+import com.arrownock.push.PahoAgent;
+import com.arrownock.push.PushConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -310,7 +315,7 @@ public class PushService extends Service {
 			Log.d(LOG_TAG, "Received null intent! The OS restarted us.");
 			// Regenerate AnPush instance
 			try {
-				AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 			} catch (ArrownockException ex) {
 				Log.e(LOG_TAG, "Error when restart push service.", ex);
 			}
@@ -403,7 +408,7 @@ public class PushService extends Service {
 				LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "Connection to messaging server has already been active.");
 				
 				try {
-					AnPush instance = AnPush.getInstance(getApplicationContext());
+					com.arrownock.anpush.AnPush instance = com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 					if(instance != null && instance.getCallback() != null) {
 						instance.getCallback().statusChanged(AnPushStatus.ENABLE, null);
 					}
@@ -579,7 +584,7 @@ public class PushService extends Service {
 				}
 				MQTTEvent mqttEvent = new MQTTEvent();
 				try {
-					if (AnPush.getInstance(getApplicationContext()).isSecureConnection()) {
+					if (com.arrownock.anpush.AnPush.getInstance(getApplicationContext()).isSecureConnection()) {
 						mqttAgent = new PahoAgent(pushHostname, pushPort, true, getServerCert(), getClientCert(), getClientKey(), initSenderName, initTopic, mqttEvent, "BKS");
 					} else {
 						//TODO 处理MQttId的赋值
@@ -898,7 +903,7 @@ public class PushService extends Service {
 
 		public void disconnected(Throwable exception) {
 			try {
-				AnPush instance = AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush instance = com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 				if(instance != null && instance.getCallback() != null) {
 					instance.getCallback().statusChanged(getCurrentStatus(), null);
 				}
@@ -920,7 +925,7 @@ public class PushService extends Service {
 
 		public void failConnect(Throwable exception) {
 			try {
-				AnPush instance = AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush instance = com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 				if(instance != null && instance.getCallback() != null) {
 					instance.getCallback().statusChanged(getCurrentStatus(), new ArrownockException(exception.getMessage(), ArrownockException.PUSH_FAILED_CONNECT));
 				}
@@ -940,7 +945,7 @@ public class PushService extends Service {
 
 		public void failDisconnect(Throwable exception) {
 			try {
-				AnPush instance = AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush instance = com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 				if(instance != null && instance.getCallback() != null) {
 					instance.getCallback().statusChanged(getCurrentStatus(), new ArrownockException(exception.getMessage(), ArrownockException.PUSH_FAILED_DISCONNECT));
 				}
@@ -1007,7 +1012,7 @@ public class PushService extends Service {
 
 		public void topicSubscribed(String topicName, int qos) {
 			try {
-				AnPush instance = AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush instance = com.arrownock.anpush.AnPush.getInstance(getApplicationContext());
 				if(instance != null && instance.getCallback() != null) {
 					instance.getCallback().statusChanged(AnPushStatus.ENABLE, null);
 				}
@@ -1018,7 +1023,7 @@ public class PushService extends Service {
 
 		public void failSubscribe(String topicName, Throwable exception) {
 			try {
-				AnPush instance = AnPush.getInstance(getApplicationContext());
+				com.arrownock.anpush.AnPush instance = AnPush.getInstance(getApplicationContext());
 				if(instance != null && instance.getCallback() != null) {
 					instance.getCallback().statusChanged(getCurrentStatus(), new ArrownockException(exception.getMessage(), ArrownockException.PUSH_FAILED_CONNECT));
 				}

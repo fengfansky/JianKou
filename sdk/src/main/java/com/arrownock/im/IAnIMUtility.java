@@ -62,7 +62,7 @@ import com.arrownock.push.IMQTTEvent;
 import com.arrownock.push.MQTTConnectionStatus;
 import com.arrownock.push.PahoAgent;
 import com.arrownock.push.PahoSocketFactory;
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.PushService;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

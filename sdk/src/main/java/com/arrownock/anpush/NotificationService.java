@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -31,7 +31,7 @@ public class NotificationService extends JobService {
 	public boolean onStartJob(JobParameters params) {
 		Log.d(LOG_TAG, "Starting keepalive job...");
 		Intent intent = new Intent();
-		ComponentName componentName = new ComponentName(getPackageName(), PushService.class.getName());
+		ComponentName componentName = new ComponentName(getPackageName(), com.arrownock.anpush.PushService.class.getName());
 		intent.setComponent(componentName);
 		intent.setAction(PushService.ACTION_CHECK_START);
 		startService(intent);

@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
                 
-        <service android:name="com.arrownock.push.PushService" />
+        <service android:name="com.arrownock.anpush.PushService" />
 
         <!--  
         <receiver android:name="com.arrownock.push.PushBroadcastReceiver" >

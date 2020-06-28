@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

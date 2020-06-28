@@ -9,7 +9,7 @@ import android.os.Build;
 import android.os.SystemClock;
 
 import com.arrownock.push.ANBase64;
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.PushService;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

@@ -12,8 +12,8 @@ import android.os.Build;
 import android.util.Log;
 
 import com.arrownock.exception.ArrownockException;
-import com.arrownock.push.AnPush;
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.AnPush;
+import com.arrownock.anpush.PushService;
 
 import org.json.JSONException;
 import org.json.JSONObject;

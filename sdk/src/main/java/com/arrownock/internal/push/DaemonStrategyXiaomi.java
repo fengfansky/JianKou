@@ -11,7 +11,7 @@ import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.PushService;
 
 import java.io.File;
 import java.io.FileOutputStream;

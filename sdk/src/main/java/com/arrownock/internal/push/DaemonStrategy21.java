@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.PushService;
 
 import java.io.File;
 import java.io.IOException;

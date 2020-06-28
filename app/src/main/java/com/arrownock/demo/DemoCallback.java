@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.arrownock.exception.ArrownockException;
-import com.arrownock.push.AnPushCallbackAdapter;
+import com.arrownock.anpush.AnPushCallbackAdapter;
 
 public class DemoCallback extends AnPushCallbackAdapter {
 	public final static String LOG_TAG = DemoCallback.class.getName();

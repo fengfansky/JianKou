@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.arrownock.exception.ArrownockException;
-import com.arrownock.push.AnPush;
+import com.arrownock.anpush.AnPush;
 
 /**
  * Push notifications management static class.

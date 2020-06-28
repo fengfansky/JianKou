@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -20,6 +20,8 @@ import com.arrownock.internal.push.LogUtil;
 import com.arrownock.internal.util.Constants;
 import com.arrownock.internal.util.DefaultHostnameVerifier;
 import com.arrownock.internal.util.KeyValuePair;
+import com.arrownock.push.PahoSocketFactory;
+import com.arrownock.push.PushConstants;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -65,10 +67,10 @@ import javax.net.ssl.HttpsURLConnection;
 public interface IAnPushUtility {
     String getDeviceUniqueId(Context context, String appKey);
     @Deprecated
-    void registerDeviceAsync(final String appKey, final String channels, final IAnPushCallback callback, final boolean overwrite, final String type, final String id);
+    void registerDeviceAsync(final String appKey, final String channels, final com.arrownock.anpush.IAnPushCallback callback, final boolean overwrite, final String type, final String id);
     void registerDeviceAsync(final String appKey, final String channels, final IAnPushRegistrationCallback callback, final boolean overwrite, final String type, final String id);
     @Deprecated
-    void unregisterDeviceAsync(final String deviceToken, final String appKey, final String channels, final IAnPushCallback callback, final boolean removeDevice, final String type);
+    void unregisterDeviceAsync(final String deviceToken, final String appKey, final String channels, final com.arrownock.anpush.IAnPushCallback callback, final boolean removeDevice, final String type);
     void unregisterDeviceAsync(final String deviceToken, final String appKey, final String channels, final IAnPushRegistrationCallback callback, final boolean removeDevice, final String type);
     void saveToLocalStorage(final String key, final String value);
 	String getFromLocalStorage(final String key);
@@ -77,19 +79,19 @@ public interface IAnPushUtility {
 	void unregisterDevice(String appKey, String deviceToken, String channels, boolean removeDevice, String type, String id) throws ArrownockException;
 	void updateDeviceToken(String appKey, String oldToken, String newToken) throws ArrownockException;
 	@Deprecated
-	void setMuteAsync(final String appKey, final String deviceToken, final IAnPushCallback callback);
+	void setMuteAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback);
 	void setMuteAsync(final String appKey, final String deviceToken, final IAnPushSettingsCallback callback);
 	@Deprecated
-	void setScheduledMuteAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, final IAnPushCallback callback);
+	void setScheduledMuteAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, final com.arrownock.anpush.IAnPushCallback callback);
 	void setScheduledMuteAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, final IAnPushSettingsCallback callback);
 	@Deprecated
-	void clearMuteAsync(final String appKey, final String deviceToken, final IAnPushCallback callback);
+	void clearMuteAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback);
 	void clearMuteAsync(final String appKey, final String deviceToken, final IAnPushSettingsCallback callback);
 	@Deprecated
-	void setSilentPeriodAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, boolean resend, final IAnPushCallback callback);
+	void setSilentPeriodAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, boolean resend, final com.arrownock.anpush.IAnPushCallback callback);
 	void setSilentPeriodAsync(final String appKey, final String deviceToken, int startGMTHour, int startGMTMinute, int duration, boolean resend, final IAnPushSettingsCallback callback);
     @Deprecated
-    void clearSilentPeriodAsync(final String appKey, final String deviceToken, final IAnPushCallback callback);
+    void clearSilentPeriodAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback);
     void clearSilentPeriodAsync(final String appKey, final String deviceToken, final IAnPushSettingsCallback callback);
     @Deprecated
     void setBadgeAsync(final String appKey, final String deviceToken, final int number, final IAnPushCallback callback);
@@ -118,7 +120,7 @@ class AnPushUtility implements IAnPushUtility {
 	private final static String MUTE_API_URL = "/" + API_VERSION + "/" + MUTE_ENDPOINT;
 	private final static String SILENT_API_URL = "/" + API_VERSION + "/" + SILENT_ENDPOINT;
 	private final static String SET_BADGE_API_URL = "/" + API_VERSION + "/" + SET_BADGE_ENDPOINT;
-	private final static String LOG_TAG = AnPush.class.getName();
+	private final static String LOG_TAG = com.arrownock.anpush.AnPush.class.getName();
 	private final static String LOG_NAME = "ArrownockSDK";
 	
 	private final static HostnameVerifier hostnameVerifier = new DefaultHostnameVerifier();
@@ -153,7 +155,7 @@ class AnPushUtility implements IAnPushUtility {
 	 * @param appKey Arrownock AppKey
 	 * @param callback Callback when device token successfully retrieved
 	 */
-	public void registerDeviceAsync(final String appKey, final String channels, final IAnPushCallback callback, final boolean overwrite, final String type, final String id) {
+	public void registerDeviceAsync(final String appKey, final String channels, final com.arrownock.anpush.IAnPushCallback callback, final boolean overwrite, final String type, final String id) {
 		Runnable getDeviceTokenThread = new Runnable(){
 			public void run() {
 				try{
@@ -166,7 +168,7 @@ class AnPushUtility implements IAnPushUtility {
 								try {
 									// invalidate the previous regid first
 									gcm.unregister();
-									regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+									regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
 									Log.d("GCM", "Got registration id: " + regId);
 									storeRegistrationId(androidContext, regId);
 					            } catch (IOException ex) {
@@ -177,13 +179,13 @@ class AnPushUtility implements IAnPushUtility {
 					            }
 							} else {
 								String senderId = getFromLocalStorage(GCM_SENDER_ID);
-							    if(!senderId.equals(AnPush.getInstance(androidContext).getSenderId())) {
+							    if(!senderId.equals(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId())) {
 							    	// sender id mismatched, need new registerId
 							    	try {
 							    		GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(androidContext);
 								    	gcm.unregister();
 								    	
-								    	regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+								    	regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
 										Log.d("GCM", "Sender ID mismatched. Got new registration id: " + regId);
 										storeRegistrationId(androidContext, regId);
 							    	}catch (IOException ex) {
@@ -194,7 +196,7 @@ class AnPushUtility implements IAnPushUtility {
 						            }
 							    }
 							}
-							String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+							String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
 							String localDeviceId = null;
 							if(id == null) {
 								if(anid == null) {
@@ -210,7 +212,7 @@ class AnPushUtility implements IAnPushUtility {
 								localDeviceId = id;
 							}
 							anid = registerDevice(appKey, regId, channels, overwrite, type, localDeviceId);
-				            saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+				            saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
 							if(callback != null) {
 								callback.register(false, anid, null);
 							}
@@ -221,7 +223,7 @@ class AnPushUtility implements IAnPushUtility {
 						//final String type = "android-arrownock";
 						String deviceToken = getDeviceToken(appKey, id);
 						if (deviceToken != null && !"".equals(deviceToken.trim())) {
-							String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+							String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
 							String localDeviceId = null;
 							if(id == null) {
 								if(anid == null) {
@@ -239,11 +241,11 @@ class AnPushUtility implements IAnPushUtility {
 							anid = registerDevice(appKey, deviceToken, channels, overwrite, type, localDeviceId);
 							if(RELOAD_DEVICE_TOKEN.equals(anid)) {
 								LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "Device token is deprecated, apply for a new one.");
-								removeFromLocalStorage(PushService.PREF_DEVICE_TOKEN);
+								removeFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_TOKEN);
 								registerDeviceAsync(appKey, channels, callback, overwrite, type, localDeviceId);
 								return;
 							}
-							saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+							saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
 							if(callback != null) {
 								callback.register(false, anid, null);
 							}
@@ -252,19 +254,19 @@ class AnPushUtility implements IAnPushUtility {
 						}
 					} else if(type.equals("android-mipush")) {
 						String regId = getMiPushRegId(androidContext);
-						synchronized(AnPush.getInstance(androidContext)) {
+						synchronized(com.arrownock.anpush.AnPush.getInstance(androidContext)) {
 							if("".equals(regId)) {
-								MiPushClient.registerPush(androidContext, getFromLocalStorage(AnPush.MIPUSH_APPID), getFromLocalStorage(AnPush.MIPUSH_APPKEY));
+								MiPushClient.registerPush(androidContext, getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPID), getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPKEY));
 								while (regId.equals("")) {
 						            try {
-										AnPush.getInstance(androidContext).wait();
+										com.arrownock.anpush.AnPush.getInstance(androidContext).wait();
 									} catch (InterruptedException e) {
 										// Ignore
 									}
 						            regId = getMiPushRegId(androidContext);
 					            }
 							}
-							String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+							String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
 							String localDeviceId = null;
 							if(id == null) {
 								if(anid == null) {
@@ -280,7 +282,7 @@ class AnPushUtility implements IAnPushUtility {
 								localDeviceId = id;
 							}
 							anid = registerDevice(appKey, regId, channels, overwrite, type, localDeviceId);
-					        saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+					        saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
 							if(callback != null) {
 								callback.register(false, anid, null);
 							}
@@ -300,13 +302,13 @@ class AnPushUtility implements IAnPushUtility {
 	public void registerInEnable(Context context, String appKey, String type, int count, String deviceId, IAnPushRegisterAnIdCallback callback) {
 	    LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "try_time=" + count + " type=" + type);
 	    
-	    String hasAlreadyRegistered = getFromLocalStorage(PushService.PREF_ALREADY_REGISTER, "no");
+	    String hasAlreadyRegistered = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_ALREADY_REGISTER, "no");
 	    LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "hasAlreadyRegistered=" + hasAlreadyRegistered);
         if ("no".equals(hasAlreadyRegistered)) {
-            String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, "");
+            String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, "");
             if (!"".equals(anid)) {
                 LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "anid=" + anid);
-                saveToLocalStorage(PushService.PREF_ALREADY_REGISTER, "yes");
+                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_ALREADY_REGISTER, "yes");
                 callback.onSuccess();
                 return;
             }
@@ -336,7 +338,7 @@ class AnPushUtility implements IAnPushUtility {
                                 try {
                                     // invalidate the previous regid first
                                     gcm.unregister();
-                                    regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+                                    regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
                                     Log.d("GCM", "Got registration id: " + regId);
                                     storeRegistrationId(androidContext, regId);
                                 } catch (IOException ex) {
@@ -345,13 +347,13 @@ class AnPushUtility implements IAnPushUtility {
                                 }
                             } else {
                                 String senderId = getFromLocalStorage(GCM_SENDER_ID);
-                                if(!senderId.equals(AnPush.getInstance(androidContext).getSenderId())) {
+                                if(!senderId.equals(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId())) {
                                     // sender id mismatched, need new registerId
                                     try {
                                         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(androidContext);
                                         gcm.unregister();
                                         
-                                        regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+                                        regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
                                         Log.d("GCM", "Sender ID mismatched. Got new registration id: " + regId);
                                         storeRegistrationId(androidContext, regId);
                                     }catch (IOException ex) {
@@ -367,8 +369,8 @@ class AnPushUtility implements IAnPushUtility {
                                 callback.onError(null, count, type);
                             } else {
                                 LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "registeranId successful");
-                                saveToLocalStorage(PushService.PREF_DEVICE_ID, result);
-                                saveToLocalStorage(PushService.PREF_ALREADY_REGISTER, "yes");
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, result);
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_ALREADY_REGISTER, "yes");
                                 callback.onSuccess();
                             }
                         } else {
@@ -385,8 +387,8 @@ class AnPushUtility implements IAnPushUtility {
                                 callback.onError(null, count, type);
                             } else {
                                 LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "registeranId successful");
-                                saveToLocalStorage(PushService.PREF_DEVICE_ID, result);
-                                saveToLocalStorage(PushService.PREF_ALREADY_REGISTER, "yes");
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, result);
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_ALREADY_REGISTER, "yes");
                                 callback.onSuccess();
                             }
                         } else {
@@ -395,12 +397,12 @@ class AnPushUtility implements IAnPushUtility {
                         }
                     } else if(type.equals("android-mipush")) {
                         String regId = getMiPushRegId(androidContext);
-                        synchronized(AnPush.getInstance(androidContext)) {
+                        synchronized(com.arrownock.anpush.AnPush.getInstance(androidContext)) {
                             if("".equals(regId)) {
-                                MiPushClient.registerPush(androidContext, getFromLocalStorage(AnPush.MIPUSH_APPID), getFromLocalStorage(AnPush.MIPUSH_APPKEY));
+                                MiPushClient.registerPush(androidContext, getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPID), getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPKEY));
                                 while (regId.equals("")) {
                                     try {
-                                        AnPush.getInstance(androidContext).wait();
+                                        com.arrownock.anpush.AnPush.getInstance(androidContext).wait();
                                     } catch (InterruptedException e) {
                                         // Ignore
                                     }
@@ -414,8 +416,8 @@ class AnPushUtility implements IAnPushUtility {
                                 callback.onError(null, count, type);
                             } else {
                                 LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "registeranId successful");
-                                saveToLocalStorage(PushService.PREF_DEVICE_ID, result);
-                                saveToLocalStorage(PushService.PREF_ALREADY_REGISTER, "yes");
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, result);
+                                saveToLocalStorage(com.arrownock.anpush.PushService.PREF_ALREADY_REGISTER, "yes");
                                 callback.onSuccess();
                             }
                         }
@@ -449,7 +451,7 @@ class AnPushUtility implements IAnPushUtility {
                                 try {
                                     // invalidate the previous regid first
                                     gcm.unregister();
-                                    regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+                                    regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
                                     Log.d("GCM", "Got registration id: " + regId);
                                     storeRegistrationId(androidContext, regId);
                                 } catch (IOException ex) {
@@ -460,13 +462,13 @@ class AnPushUtility implements IAnPushUtility {
                                 }
                             } else {
                                 String senderId = getFromLocalStorage(GCM_SENDER_ID);
-                                if(!senderId.equals(AnPush.getInstance(androidContext).getSenderId())) {
+                                if(!senderId.equals(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId())) {
                                     // sender id mismatched, need new registerId
                                     try {
                                         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(androidContext);
                                         gcm.unregister();
                                         
-                                        regId = gcm.register(AnPush.getInstance(androidContext).getSenderId());
+                                        regId = gcm.register(com.arrownock.anpush.AnPush.getInstance(androidContext).getSenderId());
                                         Log.d("GCM", "Sender ID mismatched. Got new registration id: " + regId);
                                         storeRegistrationId(androidContext, regId);
                                     }catch (IOException ex) {
@@ -477,7 +479,7 @@ class AnPushUtility implements IAnPushUtility {
                                     }
                                 }
                             }
-                            String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+                            String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
                             String localDeviceId = null;
                             if(id == null) {
                                 if(anid == null) {
@@ -493,7 +495,7 @@ class AnPushUtility implements IAnPushUtility {
                                 localDeviceId = id;
                             }
                             anid = registerDevice(appKey, regId, channels, overwrite, type, localDeviceId);
-                            saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+                            saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
                             if(callback != null) {
                                 callback.onSuccess(anid);
                             }
@@ -506,7 +508,7 @@ class AnPushUtility implements IAnPushUtility {
                         //final String type = "android-arrownock";
                         String deviceToken = getDeviceToken(appKey, id);
                         if (deviceToken != null && !"".equals(deviceToken.trim())) {
-                            String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+                            String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
                             String localDeviceId = null;
                             if(id == null) {
                                 if(anid == null) {
@@ -524,11 +526,11 @@ class AnPushUtility implements IAnPushUtility {
                             anid = registerDevice(appKey, deviceToken, channels, overwrite, type, localDeviceId);
                             if(RELOAD_DEVICE_TOKEN.equals(anid)) {
                                 LogUtil.getInstance().debug(LOG_TAG, LOG_NAME, "Device token is deprecated, apply for a new one.");
-                                removeFromLocalStorage(PushService.PREF_DEVICE_TOKEN);
+                                removeFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_TOKEN);
                                 registerDeviceAsync(appKey, channels, callback, overwrite, type, localDeviceId);
                                 return;
                             }
-                            saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+                            saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
                             if(callback != null) {
                                 callback.onSuccess(anid);
                             }
@@ -537,19 +539,19 @@ class AnPushUtility implements IAnPushUtility {
                         }
                     } else if(type.equals("android-mipush")) {
                         String regId = getMiPushRegId(androidContext);
-                        synchronized(AnPush.getInstance(androidContext)) {
+                        synchronized(com.arrownock.anpush.AnPush.getInstance(androidContext)) {
                             if("".equals(regId)) {
-                                MiPushClient.registerPush(androidContext, getFromLocalStorage(AnPush.MIPUSH_APPID), getFromLocalStorage(AnPush.MIPUSH_APPKEY));
+                                MiPushClient.registerPush(androidContext, getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPID), getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPKEY));
                                 while (regId.equals("")) {
                                     try {
-                                        AnPush.getInstance(androidContext).wait();
+                                        com.arrownock.anpush.AnPush.getInstance(androidContext).wait();
                                     } catch (InterruptedException e) {
                                         // Ignore
                                     }
                                     regId = getMiPushRegId(androidContext);
                                 }
                             }
-                            String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID, null);
+                            String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, null);
                             String localDeviceId = null;
                             if(id == null) {
                                 if(anid == null) {
@@ -565,7 +567,7 @@ class AnPushUtility implements IAnPushUtility {
                                 localDeviceId = id;
                             }
                             anid = registerDevice(appKey, regId, channels, overwrite, type, localDeviceId);
-                            saveToLocalStorage(PushService.PREF_DEVICE_ID, anid);
+                            saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID, anid);
                             if(callback != null) {
                                 callback.onSuccess(anid);
                             }
@@ -583,13 +585,13 @@ class AnPushUtility implements IAnPushUtility {
     }
 	
     @Deprecated
-    public void unregisterDeviceAsync(final String deviceToken, final String appKey, final String channels, final IAnPushCallback callback, final boolean removeDevice, final String type) {
+    public void unregisterDeviceAsync(final String deviceToken, final String appKey, final String channels, final com.arrownock.anpush.IAnPushCallback callback, final boolean removeDevice, final String type) {
         Runnable runnable = new Runnable(){
             public void run() {
                 try{
                     if (deviceToken != null && !"".equals(deviceToken.trim())) {
                         if(type.equals("android-gcm")) {
-                            String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID);
+                            String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID);
                             if(anid != null) {
                                 unregisterDevice(appKey, null, channels, removeDevice, type, anid);
                             } else {
@@ -597,7 +599,7 @@ class AnPushUtility implements IAnPushUtility {
                             }
                         } else {
                             unregisterDevice(appKey, deviceToken, channels, removeDevice, type, null);
-                            removeFromLocalStorage(PushService.PREF_DEVICE_ID);
+                            removeFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID);
                         }
                         if(callback != null) {
                             callback.unregister(false, null);
@@ -621,7 +623,7 @@ class AnPushUtility implements IAnPushUtility {
             public void run() {
                 try{
                     if (deviceToken != null && !"".equals(deviceToken.trim())) {
-                        String anid = getFromLocalStorage(PushService.PREF_DEVICE_ID);
+                        String anid = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID);
                         if(type.equals("android-gcm")) {
                             if(anid != null) {
                                 unregisterDevice(appKey, null, channels, removeDevice, type, anid);
@@ -630,7 +632,7 @@ class AnPushUtility implements IAnPushUtility {
                             }
                         } else {
                             unregisterDevice(appKey, deviceToken, channels, removeDevice, type, null);
-                            removeFromLocalStorage(PushService.PREF_DEVICE_ID);
+                            removeFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_ID);
                         }
                         if(callback != null) {
                             callback.onSuccess(anid);
@@ -650,7 +652,7 @@ class AnPushUtility implements IAnPushUtility {
     }
 	
 	public void saveToLocalStorage(final String key, final String value){
-		Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+		Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
 		editor.putString(key, value);
 		editor.commit();
 	}
@@ -660,17 +662,17 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	public String getFromLocalStorage(final String key, final String defaultValue) {
-		SharedPreferences pref = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE);
+		SharedPreferences pref = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE);
 		return pref.getString(key, defaultValue);
 	}
 	
 	public void removeFromLocalStorage(final String key) {
-		SharedPreferences pref = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE);
+		SharedPreferences pref = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE);
 		pref.edit().remove(key).commit();
 	}
 
 	private String getDeviceToken(final String appKey, final String id) throws ArrownockException {
-		String token = getFromLocalStorage(PushService.PREF_DEVICE_TOKEN);
+		String token = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_TOKEN);
 		if (token.equals("")) {
 			String mDeviceID = null;
 			String mDeviceIDType = null;
@@ -734,7 +736,7 @@ class AnPushUtility implements IAnPushUtility {
 						LogUtil.getInstance().warn(LOG_TAG, LOG_NAME, warning_message);
 						try {
 							Thread.sleep(sleep_secs * 1000);
-							if(!AnPush.getInstance(androidContext).isServiceEnabled()){
+							if(!com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()){
 								return null;
 							}
 						} catch (InterruptedException ex) {
@@ -758,7 +760,7 @@ class AnPushUtility implements IAnPushUtility {
 						LogUtil.getInstance().warn(LOG_TAG, LOG_NAME, warning_message);
 						try {
 							Thread.sleep(PushConstants.REQUEST_RETRY_TIME * 1000);
-							if(!AnPush.getInstance(androidContext).isServiceEnabled()){
+							if(!com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()){
 								return null;
 							}
 						} catch (InterruptedException ex) {
@@ -768,7 +770,7 @@ class AnPushUtility implements IAnPushUtility {
 				}
 			}
 			if (!token.equals("")) {
-				saveToLocalStorage(PushService.PREF_DEVICE_TOKEN, token);
+				saveToLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_TOKEN, token);
 			}else{
 				// Reaches maximum retry time. End here.
 				String error_message = "Retry time limit reached";
@@ -783,7 +785,7 @@ class AnPushUtility implements IAnPushUtility {
 		Map<String, Object> result = new HashMap<String, Object>();
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + urlplus);
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -840,7 +842,7 @@ class AnPushUtility implements IAnPushUtility {
 	public String registerDevice(String appKey, String deviceToken, String channels, boolean overwrite, String type, String id) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + REGISTER_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -965,7 +967,7 @@ class AnPushUtility implements IAnPushUtility {
 	public void unregisterDevice(String appKey, String deviceToken, String channels, boolean removeDevice, String type, String id) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + UNREGISTER_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1054,7 +1056,7 @@ class AnPushUtility implements IAnPushUtility {
 	public void updateDeviceToken(String appKey, String oldToken, String newToken) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + UPDATE_TOKEN_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1127,19 +1129,19 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	public KeyValuePair<String, Integer> getServiceHost(String deviceID) throws ArrownockException {
-		SharedPreferences pref = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE);
-		String pushHost = pref.getString(PushService.PREF_PUSH_HOST, null);
-		int pushPort = pref.getInt(PushService.PREF_PUSH_PORT, 1883);
-		long pushHostExpiration = pref.getLong(PushService.PREF_PUSH_HOST_EXPIRATION, 0);
+		SharedPreferences pref = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE);
+		String pushHost = pref.getString(com.arrownock.anpush.PushService.PREF_PUSH_HOST, null);
+		int pushPort = pref.getInt(com.arrownock.anpush.PushService.PREF_PUSH_PORT, 1883);
+		long pushHostExpiration = pref.getLong(com.arrownock.anpush.PushService.PREF_PUSH_HOST_EXPIRATION, 0);
 		long currentTimeMillis = System.currentTimeMillis();
 		boolean hostExpired = (currentTimeMillis > pushHostExpiration ? true : false);
 		if(hostExpired){
 			pushHost = null;
 			// Remove stored push host
-			Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-			editor.remove(PushService.PREF_PUSH_HOST);
-			editor.remove(PushService.PREF_PUSH_PORT);
-			editor.remove(PushService.PREF_PUSH_HOST_EXPIRATION);
+			Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+			editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_HOST);
+			editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_PORT);
+			editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_HOST_EXPIRATION);
 			editor.commit();
 		}
 		
@@ -1161,7 +1163,7 @@ class AnPushUtility implements IAnPushUtility {
 				if (valid) {
 					// Valid Token
 					pushHost = requestResult.get("hostname").toString();
-					if (AnPush.getInstance(androidContext).isSecureConnection()) {
+					if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 						pushPort = (Integer) requestResult.get("secure_port");
 					} else {
 						pushPort = (Integer) requestResult.get("port");
@@ -1186,7 +1188,7 @@ class AnPushUtility implements IAnPushUtility {
 						LogUtil.getInstance().warn(LOG_TAG, LOG_NAME, warning_message);
 						try {
 							Thread.sleep(sleep_secs * 1000);
-							if(!AnPush.getInstance(androidContext).isServiceEnabled()){
+							if(!com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()){
 								return null;
 							}
 						} catch (InterruptedException ex) {
@@ -1201,8 +1203,8 @@ class AnPushUtility implements IAnPushUtility {
 						LogUtil.getInstance().error(LOG_TAG, LOG_NAME, error_message);
 						if(remove_token){
 							//TODO remove token
-							removeFromLocalStorage(PushService.PREF_DEVICE_TOKEN);
-							PushService.actionStop(androidContext);
+							removeFromLocalStorage(com.arrownock.anpush.PushService.PREF_DEVICE_TOKEN);
+							com.arrownock.anpush.PushService.actionStop(androidContext);
 						}
 						return null;
 					} else if (status == 400) {
@@ -1223,7 +1225,7 @@ class AnPushUtility implements IAnPushUtility {
 						LogUtil.getInstance().warn(LOG_TAG, LOG_NAME, warning_message);
 						try {
 							Thread.sleep(PushConstants.REQUEST_RETRY_TIME * 1000);
-							if(!AnPush.getInstance(androidContext).isServiceEnabled()){
+							if(!com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()){
 								return null;
 							}
 						} catch (InterruptedException ex) {
@@ -1234,10 +1236,10 @@ class AnPushUtility implements IAnPushUtility {
 
 			}
 			if (pushHost != null) {
-				Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-				editor.putString(PushService.PREF_PUSH_HOST, pushHost);
-				editor.putInt(PushService.PREF_PUSH_PORT, pushPort);
-				editor.putLong(PushService.PREF_PUSH_HOST_EXPIRATION, pushHostExpiration);
+				Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+				editor.putString(com.arrownock.anpush.PushService.PREF_PUSH_HOST, pushHost);
+				editor.putInt(com.arrownock.anpush.PushService.PREF_PUSH_PORT, pushPort);
+				editor.putLong(com.arrownock.anpush.PushService.PREF_PUSH_HOST_EXPIRATION, pushHostExpiration);
 				editor.commit();
 			}else{
 				// Reaches maximum retry time. End here.
@@ -1253,7 +1255,7 @@ class AnPushUtility implements IAnPushUtility {
 		Map<String, Object> result = new HashMap<String, Object>();
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + urlplus);
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1380,7 +1382,7 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	// Scheduling related functions
-	public void setMuteAsync(final String appKey, final String deviceToken, final IAnPushCallback callback) {
+	public void setMuteAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback) {
 		Runnable runnable = new Runnable(){
 			public void run() {
 				try{
@@ -1419,7 +1421,7 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	@Deprecated
-	public void setScheduledMuteAsync(final String appKey, final String deviceToken, final int startGMTHour, final int startGMTMinute, final int duration, final IAnPushCallback callback) {
+	public void setScheduledMuteAsync(final String appKey, final String deviceToken, final int startGMTHour, final int startGMTMinute, final int duration, final com.arrownock.anpush.IAnPushCallback callback) {
 		Runnable runnable = new Runnable(){
 			public void run() {
 				try{
@@ -1458,7 +1460,7 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	@Deprecated
-	public void clearMuteAsync(final String appKey, final String deviceToken, final IAnPushCallback callback) {
+	public void clearMuteAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback) {
         Runnable runnable = new Runnable(){
             public void run() {
                 try{
@@ -1503,7 +1505,7 @@ class AnPushUtility implements IAnPushUtility {
 	private void setMuteUtil(String appKey, String deviceToken, boolean mute, int startGMTHour, int startGMTMinute, int duration) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + MUTE_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1590,7 +1592,7 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	@Deprecated
-	public void setSilentPeriodAsync(final String appKey, final String deviceToken, final int startGMTHour, final int startGMTMinute, final int duration, final boolean resend, final IAnPushCallback callback) {
+	public void setSilentPeriodAsync(final String appKey, final String deviceToken, final int startGMTHour, final int startGMTMinute, final int duration, final boolean resend, final com.arrownock.anpush.IAnPushCallback callback) {
         Runnable runnable = new Runnable(){
             public void run() {
                 try{
@@ -1600,10 +1602,10 @@ class AnPushUtility implements IAnPushUtility {
                     }
                     
                     // save start/stop connection time info to local storage
-                    Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-                    editor.putInt(PushService.PREF_PUSH_SCHEDULED_HOUR, startGMTHour);
-                    editor.putInt(PushService.PREF_PUSH_SCHEDULED_MINUTE, startGMTMinute);
-                    editor.putLong(PushService.PREF_PUSH_SCHEDULED_DURATION, duration*60*1000);
+                    Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+                    editor.putInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_HOUR, startGMTHour);
+                    editor.putInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_MINUTE, startGMTMinute);
+                    editor.putLong(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_DURATION, duration*60*1000);
                     editor.commit();
                     
                     scheduleStartStopConnection();
@@ -1628,10 +1630,10 @@ class AnPushUtility implements IAnPushUtility {
                     }
                     
                     // save start/stop connection time info to local storage
-                    Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-                    editor.putInt(PushService.PREF_PUSH_SCHEDULED_HOUR, startGMTHour);
-                    editor.putInt(PushService.PREF_PUSH_SCHEDULED_MINUTE, startGMTMinute);
-                    editor.putLong(PushService.PREF_PUSH_SCHEDULED_DURATION, duration*60*1000);
+                    Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+                    editor.putInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_HOUR, startGMTHour);
+                    editor.putInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_MINUTE, startGMTMinute);
+                    editor.putLong(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_DURATION, duration*60*1000);
                     editor.commit();
                     
                     scheduleStartStopConnection();
@@ -1647,7 +1649,7 @@ class AnPushUtility implements IAnPushUtility {
     }
 	
 	@Deprecated
-	public void clearSilentPeriodAsync(final String appKey, final String deviceToken, final IAnPushCallback callback) {
+	public void clearSilentPeriodAsync(final String appKey, final String deviceToken, final com.arrownock.anpush.IAnPushCallback callback) {
 		Runnable runnable = new Runnable(){
 			public void run() {
 				try{
@@ -1657,10 +1659,10 @@ class AnPushUtility implements IAnPushUtility {
 					}
 					
 					// remove start/stop connection time info to local storage
-					Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-					editor.remove(PushService.PREF_PUSH_SCHEDULED_HOUR);
-					editor.remove(PushService.PREF_PUSH_SCHEDULED_MINUTE);
-					editor.remove(PushService.PREF_PUSH_SCHEDULED_DURATION);
+					Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+					editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_HOUR);
+					editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_MINUTE);
+					editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_DURATION);
 					editor.commit();
 					
 					cancelStartStop();
@@ -1685,10 +1687,10 @@ class AnPushUtility implements IAnPushUtility {
                     }
                     
                     // remove start/stop connection time info to local storage
-                    Editor editor = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
-                    editor.remove(PushService.PREF_PUSH_SCHEDULED_HOUR);
-                    editor.remove(PushService.PREF_PUSH_SCHEDULED_MINUTE);
-                    editor.remove(PushService.PREF_PUSH_SCHEDULED_DURATION);
+                    Editor editor = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE).edit();
+                    editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_HOUR);
+                    editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_MINUTE);
+                    editor.remove(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_DURATION);
                     editor.commit();
                     
                     cancelStartStop();
@@ -1710,7 +1712,7 @@ class AnPushUtility implements IAnPushUtility {
 	private void setSilentUtil(String appKey, String deviceToken, int startGMTHour, int startGMTMinute, int duration, boolean resend, boolean set) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + SILENT_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1799,7 +1801,7 @@ class AnPushUtility implements IAnPushUtility {
 	
 	@Override
 	@Deprecated
-	public void setBadgeAsync(final String appKey, final String deviceToken, final int number, final IAnPushCallback callback) {
+	public void setBadgeAsync(final String appKey, final String deviceToken, final int number, final com.arrownock.anpush.IAnPushCallback callback) {
         Runnable runnable = new Runnable(){
             public void run() {
                 try{
@@ -1840,7 +1842,7 @@ class AnPushUtility implements IAnPushUtility {
 	private void setBadgeUtil(String appKey, String deviceToken, int number) throws ArrownockException {
 		HttpURLConnection urlConnection = null;
 		try {
-			if (AnPush.getInstance(androidContext).isSecureConnection()) {
+			if (com.arrownock.anpush.AnPush.getInstance(androidContext).isSecureConnection()) {
 				URL url = new URL(Constants.HTTPS + this.getAPIHost() + SET_BADGE_API_URL + "?key=" + appKey.trim());
 				urlConnection = (HttpsURLConnection) url.openConnection();
 				((HttpsURLConnection)urlConnection).setHostnameVerifier(hostnameVerifier);
@@ -1914,10 +1916,10 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	public void scheduleStartStopConnection() throws ArrownockException {
-		SharedPreferences mPrefs = androidContext.getSharedPreferences(PushService.LOG_TAG, Context.MODE_PRIVATE);
-		int startGMTHour = mPrefs.getInt(PushService.PREF_PUSH_SCHEDULED_HOUR, -1);
-	    int startGMTMinute = mPrefs.getInt(PushService.PREF_PUSH_SCHEDULED_MINUTE, -1);
-	    long duration = mPrefs.getLong(PushService.PREF_PUSH_SCHEDULED_DURATION, -1);
+		SharedPreferences mPrefs = androidContext.getSharedPreferences(com.arrownock.anpush.PushService.LOG_TAG, Context.MODE_PRIVATE);
+		int startGMTHour = mPrefs.getInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_HOUR, -1);
+	    int startGMTMinute = mPrefs.getInt(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_MINUTE, -1);
+	    long duration = mPrefs.getLong(com.arrownock.anpush.PushService.PREF_PUSH_SCHEDULED_DURATION, -1);
 	    
 	    if (startGMTHour != -1 && startGMTMinute != -1 && duration != -1) {
 			// set AlarmManager to start/stop push service to save server resource
@@ -1940,12 +1942,12 @@ class AnPushUtility implements IAnPushUtility {
 			if ((startMill <= nowLocalMill && endMill > nowLocalMill) || (startMill <= nowLocalMillPlus24 && endMill > nowLocalMillPlus24)){
 				// check whether connection is enabled now, if yes, it's in silent period, disable connection
 				try {
-					if (AnPush.getInstance(androidContext).isServiceEnabled()) {
+					if (com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()) {
 						Intent stopIntent = new Intent();
-						stopIntent.setClass(androidContext, PushService.class);
+						stopIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 						stopIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".STOP");
 						PendingIntent piStop = PendingIntent.getService(androidContext, 0, stopIntent, 0);
-						AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(PushService.ALARM_SERVICE);
+						AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(com.arrownock.anpush.PushService.ALARM_SERVICE);
 						alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()-1, piStop);
 					}
 				} catch (ArrownockException e) {
@@ -1962,15 +1964,15 @@ class AnPushUtility implements IAnPushUtility {
 			// schedule alarmManager to stop/start connection
 			Log.d(LOG_TAG, "Stop connection in " + stopServiceTime/1000  +" seconds ....");
 			Intent stopIntent = new Intent();
-			stopIntent.setClass(androidContext, PushService.class);
+			stopIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 			stopIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".STOP");
 			PendingIntent piStop = PendingIntent.getService(androidContext, 0, stopIntent, 0);
-			AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(PushService.ALARM_SERVICE);
+			AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(com.arrownock.anpush.PushService.ALARM_SERVICE);
 			alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + stopServiceTime, msInDay, piStop);
 			
 			Log.d(LOG_TAG, "Start connection in " + startServiceTime/1000 + " seconds ....");
 			Intent startIntent = new Intent();
-			startIntent.setClass(androidContext, PushService.class);
+			startIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 			startIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".START");
 			PendingIntent piStart = PendingIntent.getService(androidContext, 0, startIntent, 0);
 			alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + startServiceTime, msInDay, piStart);
@@ -1981,12 +1983,12 @@ class AnPushUtility implements IAnPushUtility {
 	private void cancelStartStop() throws ArrownockException {
 		// check whether connection is disabled, if disabled, enable connection
 		try {
-			if (!AnPush.getInstance(androidContext).isServiceEnabled()) {
+			if (!com.arrownock.anpush.AnPush.getInstance(androidContext).isServiceEnabled()) {
 				Intent startIntent = new Intent();
-				startIntent.setClass(androidContext, PushService.class);
+				startIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 				startIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".START");
 				PendingIntent piStart = PendingIntent.getService(androidContext, 0, startIntent, 0);
-				AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(PushService.ALARM_SERVICE);
+				AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(com.arrownock.anpush.PushService.ALARM_SERVICE);
 				alarmMgr.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()-1, piStart);
 			}
 		} catch (ArrownockException e) {
@@ -1996,13 +1998,13 @@ class AnPushUtility implements IAnPushUtility {
 		// clear all the AlarmManagers
 		Log.d(LOG_TAG, "Cancel AlarmManagers for start/stop connection ....");
 		Intent stopIntent = new Intent();
-		stopIntent.setClass(androidContext, PushService.class);
+		stopIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 		stopIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".STOP");
 		PendingIntent piStop = PendingIntent.getService(androidContext, 0, stopIntent, 0);
-		AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(PushService.ALARM_SERVICE);
+		AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(com.arrownock.anpush.PushService.ALARM_SERVICE);
 		
 		Intent startIntent = new Intent();
-		startIntent.setClass(androidContext, PushService.class);
+		startIntent.setClass(androidContext, com.arrownock.anpush.PushService.class);
 		startIntent.setAction(PushConstants.BROKER_CLIENTID_SUFFIX + ".START");
 		PendingIntent piStart = PendingIntent.getService(androidContext, 0, startIntent, 0);
 		//AlarmManager alarmMgr = (AlarmManager) androidContext.getSystemService(PushService.ALARM_SERVICE);
@@ -2012,17 +2014,17 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	private String getAPIHost() {
-		String api = getFromLocalStorage(PushService.PREF_API_HOST);
+		String api = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_API_HOST);
 		return "".equals(api)? API_BASE_URL : api;
 	}
 	
 	private String getDSHost() {
-		String ds = getFromLocalStorage(PushService.PREF_DS_HOST);
+		String ds = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_DS_HOST);
 		return "".equals(ds)? Constants.PUSH_DS_URL : ds;
 	}
 	
 	private String getAPISecret() {
-		String secret = getFromLocalStorage(PushService.PREF_API_SECRET);
+		String secret = getFromLocalStorage(com.arrownock.anpush.PushService.PREF_API_SECRET);
 		return "".equals(secret)? SIG_SEC : secret;
 	}
 	
@@ -2056,7 +2058,7 @@ class AnPushUtility implements IAnPushUtility {
 	    if(app.isEmpty()) {
 	    	return "";
 	    }
-	    String currentApp = getFromLocalStorage(AnPush.MIPUSH_APPID) + getFromLocalStorage(AnPush.MIPUSH_APPKEY);
+	    String currentApp = getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPID) + getFromLocalStorage(com.arrownock.anpush.AnPush.MIPUSH_APPKEY);
 	    if (!currentApp.equals(app)) {
 	        return "";	// MiPush Appid & Appkey changed
 	    }
@@ -2089,11 +2091,11 @@ class AnPushUtility implements IAnPushUtility {
 	}
 	
 	private String getServerCert() {
-		return getFromLocalStorage(PushService.PREF_SERVER_CERT, Constants.SSL_SERVER_CERT);
+		return getFromLocalStorage(com.arrownock.anpush.PushService.PREF_SERVER_CERT, Constants.SSL_SERVER_CERT);
 	}
 	
 	private String getClientCert() {
-		return getFromLocalStorage(PushService.PREF_CLIENT_CERT, Constants.SSL_CLIENT_CERT);
+		return getFromLocalStorage(com.arrownock.anpush.PushService.PREF_CLIENT_CERT, Constants.SSL_CLIENT_CERT);
 	}
 	
 	private String getClientKey() {

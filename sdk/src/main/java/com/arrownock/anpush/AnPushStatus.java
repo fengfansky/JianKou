@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 public enum AnPushStatus {
 	ENABLE,

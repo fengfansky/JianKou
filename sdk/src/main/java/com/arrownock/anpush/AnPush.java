@@ -1,4 +1,4 @@
-package com.arrownock.push;
+package com.arrownock.anpush;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,7 @@ import com.arrownock.exception.ArrownockException;
 import com.arrownock.internal.device.DeviceManager;
 import com.arrownock.internal.push.LogUtil;
 import com.arrownock.internal.util.Constants;
+import com.arrownock.push.PushConstants;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;

@@ -10,7 +10,7 @@ import android.os.Parcel;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.arrownock.push.PushService;
+import com.arrownock.anpush.PushService;
 
 import java.io.File;
 import java.io.IOException;
